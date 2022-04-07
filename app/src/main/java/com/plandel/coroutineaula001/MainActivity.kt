@@ -1,40 +1,83 @@
 package com.plandel.coroutineaula001
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.lifecycle.lifecycleScope
 import com.plandel.coroutineaula001.databinding.ActivityMainBinding
 import kotlinx.coroutines.*
+import kotlin.system.measureTimeMillis
 
 class MainActivity : AppCompatActivity() {
 
+    val TAG = "Main"
     lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+//-------------------------------------------------------------------------------------------------
+        //LIFECYCLESCOPE
+
+//        binding.button.setOnClickListener {
+//            lifecycleScope.launch {
+//                while (true) {
+//                    delay(1000L)
+//                    Log.d(TAG, "Still running...")
+//                }
+//            }
+//
+//            GlobalScope.launch {
+//                delay(5000L)
+//                Log.d(TAG, "onCreate: ")
+//                Intent(this@MainActivity,SecondActivity::class.java).also {
+//                    startActivity(it)
+//                    finish()
+//                }
+//            }
+//        }
+
+
+
+//-------------------------------------------------------------------------------------------------
+        //ASYNC AND AWAIT
+
+//        GlobalScope.launch(Dispatchers.IO) {
+//            val time = measureTimeMillis {
+//               val answer1 = async { doNetworkCall() }
+//               val answer2 = async { doNetworkCall2() }
+//
+//                Log.d("TAG", "Answer1 is ${answer1.await()} ")
+//                Log.d("TAG", "Answer2 is ${answer2.await()} ")
+//            }
+//            Log.d("TAG", "Request took $time ms.")
+//        }
+
+
 //-------------------------------------------------------------------------------------------------
         //JOBS, WAIT, CANCELATION
 
-        val job = GlobalScope.launch(Dispatchers.Default) {
-            Log.d("TAG", "Starting long running calculation...")
-            for (i in 30..40) {
-                if (isActive) {
-                    Log.d("TAG", "Result for 1 = $i: ${fib(i)}")
-                }
-            }
-            Log.d("TAG", "Ending long running calculation...")
-        }
-
-        runBlocking {
-            delay(2000L)
-            job.cancel()
-            Log.d("TAG", "Cancel job")
-
-
-            //job.join() join bloqueia a thread até que ela esteja finalizada
-        }
+//        val job = GlobalScope.launch(Dispatchers.Default) {
+//            Log.d("TAG", "Starting long running calculation...")
+//            for (i in 30..40) {
+//                if (isActive) {
+//                    Log.d("TAG", "Result for 1 = $i: ${fib(i)}")
+//                }
+//            }
+//            Log.d("TAG", "Ending long running calculation...")
+//        }
+//
+//        runBlocking {
+//            delay(2000L)
+//            job.cancel()
+//            Log.d("TAG", "Cancel job")
+//
+//
+//            //job.join() join bloqueia a thread até que ela esteja finalizada
+//        }
 
 //-------------------------------------------------------------------------------------------------
         //RUN BLOCKING
@@ -116,7 +159,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     suspend fun doNetworkCall2(): String {
-        delay(1000L)
+        delay(3000L)
         return "This is the answer2"
     }
 
